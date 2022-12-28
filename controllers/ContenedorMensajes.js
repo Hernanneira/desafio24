@@ -38,7 +38,7 @@ const MensajesScheme = new Schema({
 // }
 
 // const productosDAO = mongoose.model('mensajes', MensajesScheme)
-console.log("db mongoose conectada")
+console.log("db mongoose mensajes conectada")
 // inserto algo para probar que levanta
 
 // await mongoose.connect('mongodb://localhost:27017/mensajes', {
@@ -101,7 +101,7 @@ console.log("db mongoose conectada")
 //             await mongoose.disconnect();
 
 class Mensaje {
-        productosDAO = mongoose.model('mensajes', MensajesScheme);
+        mensajessDAO = mongoose.model('mensajes', MensajesScheme);
 
     async connect(){
         await mongoose.connect('mongodb://localhost:27017/mensajes', {
@@ -118,7 +118,7 @@ class Mensaje {
     async getAll() {
         try {
             await this.connect()
-            const content = await this.productosDAO.find({})
+            const content = await this.mensajessDAO.find({})
             await this.disconnect()
             return content
         } catch (error) {
@@ -129,7 +129,7 @@ class Mensaje {
     async save(newMessage) {
         try {
             await this.connect()
-            await this.productosDAO.create(newMessage)
+            await this.mensajessDAO.create(newMessage)
             const content = await this.getAll()
             await this.disconnect()
             return content

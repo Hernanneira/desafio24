@@ -1,9 +1,11 @@
 import express from 'express'
 const app = express()
 import routerProducts from './routes/products/index.js'
+// import {productosVariable} from './routes/products/index.js'
 import { faker } from '@faker-js/faker'
 faker.locale = 'es'
 import mensajeController from './controllers/ContenedorMensajes.js'
+import productosController from './controllers/ContenedorProductos.js'
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { normalize, schema, denormalize} from 'normalizr';
@@ -18,31 +20,35 @@ app.use(express.static('public'))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}));
 
-//faker
+//faker para agregar a mongo
 
-function getRandomProduct(id_articulo) {
-    return {
-        id_articulo,
-        title: faker.commerce.product(),
-        price: faker.commerce.price(),
-        thumbnail: faker.image.abstract()
-    }
-  }
+// function getRandomProduct(id_articulo) {
+//     return {
+//         id_articulo,
+//         title: faker.commerce.product(),
+//         price: faker.commerce.price(),
+//         thumbnail: faker.image.abstract()
+//     }
+//   }
 
-  const productos = []
-    for (let i = 1; i < 6; i++) {
-        productos.push(getRandomProduct(i))
-    }
+//   const productos = []
+//     for (let i = 1; i < 6; i++) {
+//         productos.push(getRandomProduct(i))
+//     }
+//     const productosRandom = await productosController.save(productos)
+
 // webSocket
+
 io.on('connection', async (socket) => {
     console.log('Un cliente se ha conectado');
     //productos
+    const productos = await productosController.getAll()
     socket.emit("productos", productos)
-    // socket.on("guardarNuevoProducto", (nuevoProducto) => {
 
-    //     ProductoController.save(nuevoProducto)
-    //     io.sockets.emit("productos", productos)
-    // })
+    socket.on("guardarNuevoProducto", async (nuevoProducto) => {
+        const newProducto = await productosController.save(nuevoProducto)
+        io.sockets.emit("productos", newProducto)
+    })
 
 //Normalizr
 function normalizeAll (getAllMessages){
@@ -69,10 +75,9 @@ function normalizeAll (getAllMessages){
     const compr = Math.round(porcentajeCompr*100)/100
     return {chatDenormalized , compr}
 }
-// mensajes
+// mensajes web socket
     const messages = await mensajeController.getAll()
     socket.emit('messages', normalizeAll(messages));
-    console.log(normalizeAll(messages))
 
     socket.on('messegesNew', async (data) => {
         const newNormMessage = {
@@ -92,8 +97,9 @@ function normalizeAll (getAllMessages){
     });
 });
 
+
 //CRUD
-app.use('/api',routerProducts )
+app.use(routerProducts)
 
 //Server
 const PORT = 8080
