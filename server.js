@@ -1,5 +1,6 @@
 import express from 'express'
 const app = express()
+import routerProducts from './routes/products/index.js'
 import { faker } from '@faker-js/faker'
 faker.locale = 'es'
 import mensajeController from './controllers/ContenedorMensajes.js'
@@ -32,7 +33,6 @@ function getRandomProduct(id_articulo) {
     for (let i = 1; i < 6; i++) {
         productos.push(getRandomProduct(i))
     }
-
 // webSocket
 io.on('connection', async (socket) => {
     console.log('Un cliente se ha conectado');
@@ -72,6 +72,7 @@ function normalizeAll (getAllMessages){
 // mensajes
     const messages = await mensajeController.getAll()
     socket.emit('messages', normalizeAll(messages));
+    console.log(normalizeAll(messages))
 
     socket.on('messegesNew', async (data) => {
         const newNormMessage = {
@@ -87,53 +88,12 @@ function normalizeAll (getAllMessages){
             text: data.text
         }
         const historialSave = await mensajeController.save(newNormMessage)
-        io.sockets.emit('messages', historialSave);
+        io.sockets.emit('messages', normalizeAll(historialSave));
     });
 });
 
-//CRUD FAKER PROD
-app.get('/api/productos-test', async (req, res, next) =>{
-    res.render('pages/index',{productos})
-})
 //CRUD
-// app.get('/', async (req, res, next) =>{
-//     const productos = await ProductoController.getAll()
-//     res.render('pages/index',{productos})
-// })
-
-// app.get('/:id', async (req,res,next) => {
-//     const { id } = req.params
-//     const productos = await ProductoController.getById(id)
-//     res.render('pages/index',{productos})
-// })
-
-// app.post('/', async (req, res, next) => {
-//     const { title, price, thumbnail } = req.body
-//     const newArticulo = {
-//         title: title,
-//         price: price,
-//         thumbnail: thumbnail
-//     }
-//     const newProducto = await ProductoController.save(newArticulo)
-//     const productos = await ProductoController.getAll()
-//     res.render('pages/index', {productos})
-// })
-
-// app.put('/:id',async (req, res, next) => {
-//     const { title, price, thumbnail } = req.body
-//     const { id } = req.params;
-//     const upDateProducto = await ProductoController.update(title, price, thumbnail,id)
-//     const productos = await ProductoController.getAll()
-//     res.render('pages/index', {productos})
-// })
-
-// app.delete('/:id', async (req, res, next) => {
-//     const { id } = req.params;
-//     const deleteProducto = await ProductoController.deleteById(id)
-//     console.log(deleteProducto)
-//     const productos = await ProductoController.getAll()
-//     res.render('pages/index', {productos})
-// })
+app.use('/api',routerProducts )
 
 //Server
 const PORT = 8080
