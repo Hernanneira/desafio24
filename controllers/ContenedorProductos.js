@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ProductosScheme = new Schema({
@@ -40,7 +40,6 @@ class Pruduct {
         try {
             await this.connect()
             const content = await this.productosDAO.find({})
-            console.log(content)
             let newId;
             if(content.length == 0){
                 newId = 1;
@@ -54,7 +53,6 @@ class Pruduct {
                 thumbnail: newArticulo.thumbnail,
                 id_articulo: newId
             }
-            console.log(newObj)
             await this.productosDAO.create(newObj)
             const newContent = await this.productosDAO.find({})
             await this.disconnect()
@@ -118,4 +116,4 @@ class Pruduct {
 
 const productosController = new Pruduct()
 
-export default productosController
+module.exports = productosController

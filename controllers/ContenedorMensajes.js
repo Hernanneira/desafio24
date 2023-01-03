@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // const MensajesScheme = new Schema(
@@ -193,4 +193,4 @@ class Mensaje {
 
 const mensajeController = new Mensaje()
 
-export default mensajeController
+module.exports = mensajeController

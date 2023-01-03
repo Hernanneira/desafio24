@@ -1,14 +1,35 @@
-import express from 'express'
-const app = express()
-import routerProducts from './routes/products/index.js'
+const express = require('express');
+const app = express();
+const routerProducts = require('./routes/products/index.js') 
+const authWebRouter = require('./routes/web/auth.js') 
 // import {productosVariable} from './routes/products/index.js'
-import { faker } from '@faker-js/faker'
+const { faker } = require('@faker-js/faker') 
 faker.locale = 'es'
-import mensajeController from './controllers/ContenedorMensajes.js'
-import productosController from './controllers/ContenedorProductos.js'
-import { createServer } from "http";
-import { Server } from "socket.io";
-import { normalize, schema, denormalize} from 'normalizr';
+const mensajeController = require('./controllers/ContenedorMensajes.js')
+const productosController = require('./controllers/ContenedorProductos.js')
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+const { normalize, schema, denormalize} = require('normalizr');
+
+const dotenv = require('dotenv');
+dotenv.config();
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
+const mongoURlString = `mongodb+srv://${process.env.MONGO_ATLAS_USER}:${process.env.MONGO_ATLAS_PASS}@clustercoder.rrnnvzr.mongodb.net/?retryWrites=true&w=majority`
+
+app.use(cookieParser());
+app.use(session({
+    store: MongoStore.create({ mongoUrl: mongoURlString, 
+    mongoOptions: advancedOptions}),
+    secret: 'coder19dic',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 600000
+    }
+}));
 
 const httpServer = new createServer(app)
 const io = new Server(httpServer)
@@ -41,6 +62,11 @@ app.use(express.urlencoded({extended:true}));
 
 io.on('connection', async (socket) => {
     console.log('Un cliente se ha conectado');
+    //User
+    socket.on("loginUsuario",(logUser) => {
+        socket.emit("user", logUser)
+    })
+
     //productos
     const productos = await productosController.getAll()
     socket.emit("productos", productos)
@@ -97,8 +123,8 @@ function normalizeAll (getAllMessages){
     });
 });
 
-
 //CRUD
+app.use(authWebRouter)
 app.use(routerProducts)
 
 //Server

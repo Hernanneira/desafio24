@@ -1,11 +1,12 @@
 const socket = io.connect();
 
+//productos
+
 socket.on("productos", listaProductos => {
     loadProds(listaProductos)
 });
 
 async function loadProds(listProd) {
-    console.log(listProd)
     let htmlProd = ''
     const tableList = await fetch('../views/partials/table.ejs').then(res => res.text())
     if (listProd.length === 0){
@@ -18,6 +19,7 @@ async function loadProds(listProd) {
 }
 
 document.getElementById('btn').addEventListener('click', (e) => {
+    e.preventDefault
     const nuevoProducto = {
         title: document.getElementById('title').value,
         price: document.getElementById('price').value,
