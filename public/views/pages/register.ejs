@@ -14,18 +14,18 @@
         <%- include('../partials/navbar'); %>
     </header>
     <main class="container bg-light ">
-        <h1>Login de Usuario</h1>
-            <form action="/login" method="post" class="my-3">
+        <h1>Registro de Usuario</h1>
+            <form class="form" action="/register" method="post" role="form" autocomplete="off">
                 <div class="row g-3">
                     <div class="col">
                         <input type="text" class="form-control" placeholder="Nombre de Usuario" name="username" id="username" required>
                         <input type="password" class="form-control" placeholder="contraseña" name="password" id="password" required>
-                        <button type="submit" class="btn btn-outline-success" id="envUsuario">Enviar</button>
+                        <button type="submit" class="btn btn-outline-success" id="envRegistro" value="Register">Registrar</button>
                     </div>
                 </div>
             </form>
             <div class="col">
-                <button class="btn btn-outline-success" id="envUsuario" onclick="location.href='/register'">Registrar</button>
+                <button class="btn btn-outline-success" id="envUsuario" onclick="location.href='/login'">Login</button>
             </div>
     </main>
 </body>

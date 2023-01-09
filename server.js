@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const routerProducts = require('./routes/products/index.js') 
 const authWebRouter = require('./routes/web/auth.js') 
-// import {productosVariable} from './routes/products/index.js'
 const { faker } = require('@faker-js/faker') 
 faker.locale = 'es'
 const mensajeController = require('./controllers/ContenedorMensajes.js')
@@ -10,6 +9,8 @@ const productosController = require('./controllers/ContenedorProductos.js')
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const { normalize, schema, denormalize} = require('normalizr');
+const passport = require('passport');
+const { Strategy: LocalStrategy } = require('passport-local');
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -30,6 +31,8 @@ app.use(session({
         maxAge: 600000
     }
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 const httpServer = new createServer(app)
 const io = new Server(httpServer)
