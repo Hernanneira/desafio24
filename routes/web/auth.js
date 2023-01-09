@@ -4,8 +4,19 @@ const passport = require('passport');
 const { Strategy: LocalStrategy } = require('passport-local');
 const usersController = require('./../../controllers/ContenedorLoginMongo')
 const authWebRouter = new Router()
-//persistencia
-// const usuarios = [];
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
+function isValidPassword(user, password) {
+    return bcrypt.compareSync(password, user.password);
+}
+
+function createHash(password) {
+    return bcrypt.hashSync(
+            password,
+            bcrypt.genSaltSync(saltRounds),
+            null);
+}  
 
 // passport config
 passport.use('register', new LocalStrategy({
@@ -22,7 +33,7 @@ passport.use('register', new LocalStrategy({
 
     const user = {  
         username,
-        password,
+        password: createHash(password)
     }
     // usuarios.push(user)
     const newUser = await usersController.save(user)
@@ -37,9 +48,15 @@ passport.use('login', new LocalStrategy(async (username, password, done) => {
         return done(null, false)
     }
 
-    if (user.password !== password) {
-        return done(null, false)
-    }
+    // if (user.password !== password) {
+    //     return done(null, false)
+    // }
+
+    if (!isValidPassword(user, password)) {
+        console.log('Invalid Password');
+        return done(null, false);
+      }
+ 
 
     return done(null, user)
 }));
