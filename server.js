@@ -1,9 +1,8 @@
 const express = require('express');
-const app = express();
 const routerProducts = require('./routes/products/index.js') 
-const authWebRouter = require('./routes/web/auth.js') 
+const authWebRouter = require('./routes/web/auth.js')
+const routerProcess = require('./routes/object/process.js')
 const { faker } = require('@faker-js/faker') 
-faker.locale = 'es'
 const mensajeController = require('./controllers/ContenedorMensajes.js')
 const productosController = require('./controllers/ContenedorProductos.js')
 const { createServer } = require("http");
@@ -11,14 +10,21 @@ const { Server } = require("socket.io");
 const { normalize, schema, denormalize} = require('normalizr');
 const passport = require('passport');
 const { Strategy: LocalStrategy } = require('passport-local');
-
 const dotenv = require('dotenv');
-dotenv.config();
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const parseArgs = require('minimist');
+const { Console } = require('console');
+
+
+const args = parseArgs(process.argv.slice(2));
+const app = express();
+faker.locale = 'es'
+dotenv.config();
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const mongoURlString = `mongodb+srv://${process.env.MONGO_ATLAS_USER}:${process.env.MONGO_ATLAS_PASS}@clustercoder.rrnnvzr.mongodb.net/?retryWrites=true&w=majority`
+const PORT = args.port || 8080;
 
 app.use(cookieParser());
 app.use(session({
@@ -129,9 +135,10 @@ function normalizeAll (getAllMessages){
 //CRUD
 app.use(authWebRouter)
 app.use(routerProducts)
+app.use(routerProcess)
 
 //Server
-const PORT = 8080
+// const PORT = 8080
 const server = httpServer.listen(PORT, () => {
     console.log(`Servidor http escuchando en el puerto ${server.address().port}`)
 })

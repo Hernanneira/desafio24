@@ -21,7 +21,7 @@ function createHash(password) {
 // passport config
 passport.use('register', new LocalStrategy({
     passReqToCallback: true
-}, async (req, username, password, done) => {
+}, async (username, password, done) => {
 
     const usuarios = await usersController.getAll()
 
