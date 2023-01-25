@@ -16,7 +16,8 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const parseArgs = require('minimist');
 const { Console } = require('console');
-
+const cluster = require('cluster');
+const os = require('os')
 
 const args = parseArgs(process.argv.slice(2));
 const app = express();
@@ -25,6 +26,10 @@ dotenv.config();
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const mongoURlString = `mongodb+srv://${process.env.MONGO_ATLAS_USER}:${process.env.MONGO_ATLAS_PASS}@clustercoder.rrnnvzr.mongodb.net/?retryWrites=true&w=majority`
 const PORT = args.port || 8080;
+// const PORT = parseInt(process.argv[2]) || 8080;
+const modoCluster = args.modo == 'CLUSTER'
+// const modoCluster = process.argv[3] == 'CLUSTER';
+const numCPUs = os.cpus().length;
 
 app.use(cookieParser());
 app.use(session({
@@ -49,23 +54,6 @@ app.set('views', './public/views');
 app.use(express.static('public'))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}));
-
-//faker para agregar a mongo
-
-// function getRandomProduct(id_articulo) {
-//     return {
-//         id_articulo,
-//         title: faker.commerce.product(),
-//         price: faker.commerce.price(),
-//         thumbnail: faker.image.abstract()
-//     }
-//   }
-
-//   const productos = []
-//     for (let i = 1; i < 6; i++) {
-//         productos.push(getRandomProduct(i))
-//     }
-//     const productosRandom = await productosController.save(productos)
 
 // webSocket
 
@@ -137,9 +125,41 @@ app.use(authWebRouter)
 app.use(routerProducts)
 app.use(routerProcess)
 
+//Server CLOUSETER OR FORK
+
+// master
+if (modoCluster && cluster.isPrimary) {
+
+    console.log(`Primary ${process.pid} is running`);
+    console.log(`número de procesadores: ${numCPUs}`);
+
+    for (let i = 0; i < numCPUs; i++) {
+        cluster.fork();
+    }
+
+    cluster.on('exit', worker => {
+        console.log(`worker ${worker.process.pid} died`, new Date().toLocaleString());
+        cluster.fork();
+    }); 
+}
+
+  // workers
+else {
+
+    app.get('/datos', (req, res) => {
+        res.send(`Server en Port(${PORT}) - PID ${process.pid} - FyH ${new Date().toLocaleString()}`);
+      })
+
+    const server = app.listen(PORT, () => {
+        console.log(`Servidor express escuchando en http://localhost:${PORT} - PID ${process.pid}`);
+    });
+
+    server.on('error', error => console.log(`Error en servidor ${error}`));
+}
+
+
 //Server
-// const PORT = 8080
-const server = httpServer.listen(PORT, () => {
-    console.log(`Servidor http escuchando en el puerto ${server.address().port}`)
-})
-server.on("error", error => console.log(`Error en servidor ${error}`))
+// const server = httpServer.listen(PORT, () => {
+//     console.log(`Servidor http escuchando en el puerto ${server.address().port}`)
+// })
+// server.on("error", error => console.log(`Error en servidor ${error}`))
