@@ -31,7 +31,9 @@
     "passport-local": "^1.0.0",
     "session-file-store": "^1.5.0",
     "socket.io": "^4.5.3",
-    "sqlite3": "^5.1.2"
+    "sqlite3": "^5.1.2",
+    "compression": "^1.7.4",
+    "log4js": "^6.7.1"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0"

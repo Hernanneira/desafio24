@@ -18,6 +18,8 @@ const parseArgs = require('minimist');
 const { Console } = require('console');
 const cluster = require('cluster');
 const os = require('os')
+const logger = require('./api/log4js')
+
 
 const args = parseArgs(process.argv.slice(2));
 const app = express();
@@ -121,9 +123,21 @@ function normalizeAll (getAllMessages){
 });
 
 //CRUD
+
+
 app.use(authWebRouter)
 app.use(routerProducts)
 app.use(routerProcess)
+
+app.use((req, res, next) => {
+    const { url, method, route } = req;
+    if(route) {
+        logger.info(`Se accedio a ${url} con método ${method} exitosamente`);
+    }else{
+        logger.warn(`Se intentó acceder a ${url} con método ${method}, no está implementado`);
+        res.status(404).send(`No se encontró el recurso ${url}`);
+    }
+});
 
 //Server CLOUSETER OR FORK
 
@@ -146,14 +160,13 @@ if (modoCluster && cluster.isPrimary) {
   // workers
 else {
 
-    app.get('/datos', (req, res) => {
-        res.send(`Server en Port(${PORT}) - PID ${process.pid} - FyH ${new Date().toLocaleString()}`);
-      })
+    // app.get('/datos', (req, res) => {
+    //     res.send(`Server en Port(${PORT}) - PID ${process.pid} - FyH ${new Date().toLocaleString()}`);
+    //   })
 
-    const server = app.listen(PORT, () => {
-        console.log(`Servidor express escuchando en http://localhost:${PORT} - PID ${process.pid}`);
-    });
-
+    const server = httpServer.listen(PORT, () => {
+    console.log(`Servidor express escuchando en http://localhost:${PORT} - PID ${process.pid}`);
+})
     server.on('error', error => console.log(`Error en servidor ${error}`));
 }
 

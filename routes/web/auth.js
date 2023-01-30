@@ -6,6 +6,7 @@ const usersController = require('./../../controllers/ContenedorLoginMongo')
 const authWebRouter = new Router()
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const logger = require('../../api/log4js')
 
 function isValidPassword(user, password) {
     return bcrypt.compareSync(password, user.password);
@@ -37,7 +38,6 @@ passport.use('register', new LocalStrategy({
     }
     // usuarios.push(user)
     const newUser = await usersController.save(user)
-
     return done(null, user)
     }));
 
@@ -64,6 +64,7 @@ passport.use('login', new LocalStrategy(async (username, password, done) => {
 passport.serializeUser(async function (user, done) {
     done(null, user.username);
 });
+
 passport.deserializeUser(async function (username, done) {
     const usuarios = await usersController.getAll()
     const user = usuarios.find(u => u.username === username)
@@ -71,12 +72,14 @@ passport.deserializeUser(async function (username, done) {
 });
 
 
-authWebRouter.get('/', (req,res) => { 
+authWebRouter.get('/', (req,res) => {
+    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
     res.render('pages/login')
 })
 
 //login
 authWebRouter.get('/login', (req, res) => {
+    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
     const nombre = req.session?.username
     if (nombre) {
         res.redirect('/api/productos-test')
@@ -96,7 +99,8 @@ authWebRouter.post('/login',
     }
 )
 
-authWebRouter.get('/login-error', (req,res) => { 
+authWebRouter.get('/login-error', (req,res) => {
+    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
     res.render('pages/login-error')
 })
 
@@ -109,6 +113,7 @@ authWebRouter.get('/login-error', (req,res) => {
 
 //logout
 authWebRouter.get('/logout', (req, res) => {
+    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
     const nombre = req.session?.nombre
     console.log('en logout')
     if (nombre) {
@@ -126,6 +131,7 @@ authWebRouter.get('/logout', (req, res) => {
 
 // //register
 authWebRouter.get('/register', (req, res) => {
+    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
     // const nombre = req.session?.usuario
     // if (nombre) {
     //     res.redirect('pages/register-error')
@@ -139,7 +145,8 @@ authWebRouter.post('/register', passport.authenticate('register',
     { failureRedirect: '/register-error', successRedirect: '/login'})
 )
 
-authWebRouter.get('/register-error',(req,res) =>{ 
+authWebRouter.get('/register-error',(req,res) =>{
+    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
     res.render('pages/register-error')
 })
 
@@ -148,5 +155,6 @@ authWebRouter.get('/register-error',(req,res) =>{
 //     console.log(req.body.usuario)
 //     res.redirect('/login')
 // })
+
 
 module.exports = authWebRouter
