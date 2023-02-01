@@ -27,6 +27,7 @@ class Users {
         try {
             await this.connect()
             const content = await this.UsersDAO.find({})
+            console.log('CONTROLLER GET ALL MONGO USERS*****')
             await this.disconnect()
             return content
         } catch (error) {

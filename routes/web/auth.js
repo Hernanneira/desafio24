@@ -22,7 +22,8 @@ function createHash(password) {
 // passport config
 passport.use('register', new LocalStrategy({
     passReqToCallback: true
-}, async (username, password, done) => {
+}, async (req, username, password, done) => {
+
 
     const usuarios = await usersController.getAll()
 
@@ -33,9 +34,10 @@ passport.use('register', new LocalStrategy({
     }
 
     const user = {  
-        username,
+        username: username,
         password: createHash(password)
     }
+
     // usuarios.push(user)
     const newUser = await usersController.save(user)
     return done(null, user)
@@ -43,6 +45,7 @@ passport.use('register', new LocalStrategy({
 
 passport.use('login', new LocalStrategy(async (username, password, done) => {
     const usuarios = await usersController.getAll()
+    console.log('PASSPORT.LOGIN BUSCANDO A USER EN MONGO')
     const user = usuarios.find(u => u.username === username)
     if (!user) {
         return done(null, false)
@@ -57,29 +60,30 @@ passport.use('login', new LocalStrategy(async (username, password, done) => {
         return done(null, false);
       }
  
-
     return done(null, user)
 }));
 
 passport.serializeUser(async function (user, done) {
+    console.log('serializar USER*********')
     done(null, user.username);
 });
 
 passport.deserializeUser(async function (username, done) {
-    const usuarios = await usersController.getAll()
-    const user = usuarios.find(u => u.username === username)
-    done(null, user);
+        const usuarios = await usersController.getAll()
+        console.log(' USUARIOS DESERIALIZAR**********',usuarios)
+        const user = usuarios.find(u => u.username === username)
+        done(null, user);
 });
 
 
 authWebRouter.get('/', (req,res) => {
-    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
+    // logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
     res.render('pages/login')
 })
 
 //login
 authWebRouter.get('/login', (req, res) => {
-    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
+    // logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
     const nombre = req.session?.username
     if (nombre) {
         res.redirect('/api/productos-test')
@@ -100,7 +104,7 @@ authWebRouter.post('/login',
 )
 
 authWebRouter.get('/login-error', (req,res) => {
-    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
+    // logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
     res.render('pages/login-error')
 })
 
@@ -113,7 +117,7 @@ authWebRouter.get('/login-error', (req,res) => {
 
 //logout
 authWebRouter.get('/logout', (req, res) => {
-    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
+    // logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
     const nombre = req.session?.nombre
     console.log('en logout')
     if (nombre) {
@@ -131,7 +135,7 @@ authWebRouter.get('/logout', (req, res) => {
 
 // //register
 authWebRouter.get('/register', (req, res) => {
-    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
+    // logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
     // const nombre = req.session?.usuario
     // if (nombre) {
     //     res.redirect('pages/register-error')
@@ -146,7 +150,7 @@ authWebRouter.post('/register', passport.authenticate('register',
 )
 
 authWebRouter.get('/register-error',(req,res) =>{
-    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
+    // logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
     res.render('pages/register-error')
 })
 

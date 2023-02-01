@@ -124,20 +124,9 @@ function normalizeAll (getAllMessages){
 
 //CRUD
 
-
 app.use(authWebRouter)
 app.use(routerProducts)
 app.use(routerProcess)
-
-app.use((req, res, next) => {
-    const { url, method, route } = req;
-    if(route) {
-        logger.info(`Se accedio a ${url} con método ${method} exitosamente`);
-    }else{
-        logger.warn(`Se intentó acceder a ${url} con método ${method}, no está implementado`);
-        res.status(404).send(`No se encontró el recurso ${url}`);
-    }
-});
 
 //Server CLOUSETER OR FORK
 

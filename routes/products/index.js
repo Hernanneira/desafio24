@@ -5,13 +5,21 @@ const productosController = require('../../controllers/ContenedorProductos.js')
 const webAuth = require('../../auth/index.js')
 const logger = require('../../api/log4js')
 
-routerProducts.get('/api/productos-test', webAuth, async (req, res, next) =>{
-    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
+routerProducts.get('/api/productos-test', async (req, res, next) =>{
+
+    try{
+       logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
+    console.log('ROUTE INDEX GET API/Prod usan GETALLMONGO PRODUCTOS********')
     const productos = await productosController.getAll()
     if (!productos) {
         logger.error('no se pudo traer productos')
     }
-    res.render('pages/index',{productos, nombre: req.session.nombre })
+    res.render('pages/index',{productos, nombre: req.session.nombre }) 
+    }catch (err) {
+        console.log(err)
+        logger.error(`no se pudo acceder a a ${req.url} con método ${req.method}`)
+    }
+    
 })
 
 routerProducts.get('/api/productos-test/:id', async (req,res,next) => {
@@ -23,11 +31,9 @@ routerProducts.get('/api/productos-test/:id', async (req,res,next) => {
 })
 
 routerProducts.post('/api/productos-test', async (req, res, next) => {
-    // const { title, price, thumbnail,nombre } = req.body
 
-    // if(title == '' || price == '' || thumbnail == '') {
-        logger.error('existen campos en blanco')
-    // }
+    try{
+        const { title, price, thumbnail, nombre } = req.body
 
     // console.log(req.session.nombre)
     const newArticulo = {
@@ -39,6 +45,11 @@ routerProducts.post('/api/productos-test', async (req, res, next) => {
     const newProducto = await productosController.save(newArticulo)
     const productos = await productosController.getAll()
     res.render('pages/index', {productos})
+    }catch (err) {
+        console.log(err)
+        logger.error('existen campos en blanco')
+    }
+    
 })
 
 routerProducts.put('/api/productos-test/:id',async (req, res, next) => {

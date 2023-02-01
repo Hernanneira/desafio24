@@ -10,7 +10,7 @@ const logger = require('../../api/log4js')
 
 routerProcess.get('/info',compression() ,async (req, res, next) =>{
 
-    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
+    // logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
 
     const argumentos = args.slice(2);
     const platform = process.platform;
@@ -32,11 +32,12 @@ routerProcess.get('/info',compression() ,async (req, res, next) =>{
         numCPUs,
     }
 
+
     res.send({datos})
 })
 
 routerProcess.get('/api/randoms', async (req, res, next) =>{
-    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
+    // logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
     const cant = req.query.cant || 100000000
     const child = fork('./api/calculo.js');
     child.send(cant);
