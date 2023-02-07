@@ -6,7 +6,7 @@ const UsersScheme = new Schema({
     password: { type: String, required: true },
 })
 
-console.log("db mongoose usuarios conectada")
+// console.log("db mongoose usuarios conectada")
 
 class Users {
         UsersDAO = mongoose.model('users', UsersScheme);
@@ -17,15 +17,19 @@ class Users {
             useUnifiedTopology: true,
             serverSelectionTimeoutMS: 5000,
         });
+        console.log("db mongoose usuarios conectada")
         }
 
     async disconnect(){
-        await mongoose.disconnect();
+        await mongoose.disconnect()
+        console.log("db mongoose usuarios desconectada");
     }
 
     async getAll() {
         try {
+            console.log('CONTROLLER GET ALL INICIO*****')
             await this.connect()
+            console.log('CONTROLLER GET ALL SE CONECTO*****')
             const content = await this.UsersDAO.find({})
             console.log('CONTROLLER GET ALL MONGO USERS*****')
             await this.disconnect()

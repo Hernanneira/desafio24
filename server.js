@@ -15,10 +15,10 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const parseArgs = require('minimist');
-const { Console } = require('console');
 const cluster = require('cluster');
 const os = require('os')
-const logger = require('./api/log4js')
+const router = require('./routes/index')
+const path = require('path');
 
 
 const args = parseArgs(process.argv.slice(2));
@@ -33,29 +33,30 @@ const modoCluster = args.modo == 'CLUSTER'
 // const modoCluster = process.argv[3] == 'CLUSTER';
 const numCPUs = os.cpus().length;
 
-app.use(cookieParser());
-app.use(session({
-    store: MongoStore.create({ mongoUrl: mongoURlString, 
-    mongoOptions: advancedOptions}),
-    secret: 'coder19dic',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        maxAge: 600000
-    }
-}));
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(cookieParser());
+// app.use(session({
+//     store: MongoStore.create({ mongoUrl: mongoURlString, 
+//     mongoOptions: advancedOptions}),
+//     secret: 'coder19dic',
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//         maxAge: 600000
+//     }
+// }));
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 const httpServer = new createServer(app)
 const io = new Server(httpServer)
 
-app.set('view engine', 'ejs')
-app.set('views', './public/views');
-
-app.use(express.static('public'))
 app.use(express.json())
 app.use(express.urlencoded({extended:true}));
+
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, './public/views/pages'));
+
+app.use(express.static(__dirname +'public'))
 
 // webSocket
 
@@ -123,10 +124,10 @@ function normalizeAll (getAllMessages){
 });
 
 //CRUD
-
-app.use(authWebRouter)
-app.use(routerProducts)
-app.use(routerProcess)
+app.use(router)
+// app.use(authWebRouter)
+// app.use(routerProducts)
+// app.use(routerProcess)
 
 //Server CLOUSETER OR FORK
 

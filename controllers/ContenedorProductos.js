@@ -62,6 +62,7 @@ class Pruduct {
             return(error)
         }
     }
+    
     async getById(id_articulo){
         try {
             await this.connect()
