@@ -6,7 +6,7 @@ const { fork } = require('child_process');
 const { query } = require('express');
 const os = require('os')
 const compression = require('compression');
-const logger = require('../../api/log4js')
+const logger = require('../../utils/log4js')
 
 routerProcess.get('/info',compression() ,async (req, res, next) =>{
 

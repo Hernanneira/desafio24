@@ -1,6 +1,6 @@
 const {Router} = require('express');
 const router = Router();
-const logger = require('../api/log4js')
+const logger = require('../utils/log4js')
 
 //http://localhost:8081/api/randoms?cant=1000
 

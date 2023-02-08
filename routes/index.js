@@ -1,7 +1,6 @@
 const {Router} = require('express');
-const isAuth = require('../auth/index');
-const logger = require('../api/log4js')
-
+const isAuth = require('../utils/auth');
+const logger = require('../utils/log4js')
 
 const router = Router();
 const routeProducts = require('./productRoute')
@@ -11,13 +10,18 @@ const routeLogout = require('./logoutRoute')
 const routeInfo = require('./infoRoute')
 const routeRandom = require('./randomRoute')
 const passport = require('passport');
+const sessionDBConnection = require('../db/sessionMongoAtlasDBConnection')
 
-// router.use(passport.initialize(), (req,res) => {
-//     console.log('iniciando passport')
-// })
-// router.use(passport.session(),(req,res) => {
-//     console.log('iniciando passport session')
-// })
+router.use(sessionDBConnection)
+
+router.use(passport.initialize(), (req,res,next) => {
+    console.log('iniciando passport en indexRoute')
+    next()
+})
+router.use(passport.session(),(req,res,next) => {
+    console.log('iniciando passport session en indexRoute')
+    next()
+})
 
 router.use('/api/productos',isAuth, routeProducts)
 router.use('/login', routeLogin)

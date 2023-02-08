@@ -27,11 +27,10 @@ class Users {
 
     async getAll() {
         try {
-            console.log('CONTROLLER GET ALL INICIO*****')
             await this.connect()
-            console.log('CONTROLLER GET ALL SE CONECTO*****')
+        
             const content = await this.UsersDAO.find({})
-            console.log('CONTROLLER GET ALL MONGO USERS*****')
+          
             await this.disconnect()
             return content
         } catch (error) {

@@ -45,14 +45,14 @@ passport.deserializeUser(async function (username,done){
     done(null, userSelected)
 })
 
-router.use(passport.initialize(), (req,res,next) => {
-    console.log('iniciando passport en register')
-    next()
-})
-router.use(passport.session(),(req,res,next) => {
-    console.log('iniciando passport session en register')
-    next()
-})
+// router.use(passport.initialize(), (req,res,next) => {
+//     console.log('iniciando passport en register')
+//     next()
+// })
+// router.use(passport.session(),(req,res,next) => {
+//     console.log('iniciando passport session en register')
+//     next()
+// })
 
 router.get('/', async(req,res)=>{
     res.render('register.ejs')

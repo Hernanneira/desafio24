@@ -3,17 +3,19 @@ const socket = io.connect();
 //productos
 
 socket.on("productos", listaProductos => {
+    console.log('productos recibidos en socket on:' , listaProductos)
     loadProds(listaProductos)
 });
 
 async function loadProds(listProd) {
     let htmlProd = ''
+    console.log('lisrProd0000000000000000000000000000',listProd)
     const tableList = await fetch('../views/partials/table.ejs').then(res => res.text())
     if (listProd.length === 0){
         htmlProd = `<h4>No se encontraron productos.</h4>`
     }else{
         htmlProd = ejs.render(tableList, {listProd})
-    }
+    }   
 
     document.getElementById('tabla').innerHTML = htmlProd; 
 }
