@@ -30,7 +30,7 @@ class Users {
             await this.connect()
         
             const content = await this.UsersDAO.find({})
-          
+            console.log(content)
             await this.disconnect()
             return content
         } catch (error) {

@@ -12,6 +12,7 @@ router.get('/',  async (req, res, next) =>{
         if (!productos) {
             logger.error('no se pudo traer productos')
         }
+        console.log('req.session en api/productos =', req.session)
         res.render('index.ejs',{productos, nombre: req.session.passport.user }) 
         }catch (err) {
             console.log(err)

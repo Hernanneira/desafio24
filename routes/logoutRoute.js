@@ -1,25 +1,28 @@
 const {Router} = require('express');
-const passport = require('passport');
+// const passport = require('passport');
 const router = Router();
-// const sessionDBConnection = require('../db/sessionMongoAtlasDBConnection')
+const sessionDBConnection = require('../db/sessionMongoAtlasDBConnection')
 
 
-// router.use(sessionDBConnection)
+router.use(sessionDBConnection)
 
 router.get('/',(req,res)=>{
-    const nombre = req.session?.passport.nombre
-    console.log('nombre en log out:', nombre)
-    console.log('en logout')
+    console.log('req.session:',req.session)
+    const nombre = req.session.passport?.user
     if (nombre) {
+        console.log('nombre=', nombre)
         req.session.destroy(err => {
             if (!err) { 
                 res.render('logout.ejs', { nombre })
+                console.log('logout exitoso')
             } else {
                 res.redirect('/api/productos')
+                console.log('redirigio a api/productos nombre =true')
             }
         })
     } else {
         res.redirect('/api/productos')
+        console.log('redirigio a api/productos')
     }
     // req.session.destroy()
     // req.logout()

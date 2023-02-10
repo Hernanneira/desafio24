@@ -10,6 +10,7 @@
 const isAuth = (req, res, next) => {
     console.log(req.isAuthenticated())
     if (req.isAuthenticated()) {
+        console.log('req.isAuthenticated():',req.isAuthenticated())
         next()
     } else {
         res.redirect('/login')

@@ -10,8 +10,10 @@ const routeLogout = require('./logoutRoute')
 const routeInfo = require('./infoRoute')
 const routeRandom = require('./randomRoute')
 const passport = require('passport');
-const sessionDBConnection = require('../db/sessionMongoAtlasDBConnection')
+const sessionDBConnection = require('../db/sessionMongoAtlasDBConnection');
+// const cookieParser = require('cookie-parser');
 
+// router.use(cookieParser)
 router.use(sessionDBConnection)
 
 router.use(passport.initialize(), (req,res,next) => {
@@ -23,16 +25,21 @@ router.use(passport.session(),(req,res,next) => {
     next()
 })
 
-router.use('/api/productos',isAuth, routeProducts)
+router.use('/api/productos',isAuth, routeProducts) // midleware isAuth removido funciona.
 router.use('/login', routeLogin)
 router.use('/register', routeRegister)
 router.use('/logout', routeLogout)
 router.use('/info',routeInfo)
 router.use('/api/randoms',routeRandom)
 
+// router.get('/', (req, res) => {
+//     res.redirect('/api/productos')
+// })
+
 router.get('/', (req, res) => {
-    res.redirect('/api/productos')
+    res.redirect('/login')
 })
+
 // router.get('*', (req, res) => {
 //     logger.warn(`Route: ${req.path} 404 Not Found Method: ${req.method} `);
 //     res.send("Sorry 🤷‍♂️ 404 Not Found");
