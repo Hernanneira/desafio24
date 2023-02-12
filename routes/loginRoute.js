@@ -1,20 +1,18 @@
-require('dotenv').config()
 const {Router} = require('express');
 const router = Router();
 const sessionDBConnection = require('../db/sessionMongoAtlasDBConnection')
 const usersController = require('../controllers/ContenedorLoginMongo')
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
-const cookieParser = require('cookie-parser');
+// const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const { Strategy: LocalStrategy } = require('passport-local');
+const logger = require('../utils/log4js')
 
 function isValidPassword(user, password) {
     return bcrypt.compareSync(password, user.password);
 }
 
 passport.use('local', new LocalStrategy(async (username, password, done) => {
-    console.log('iniciando passport.use local en login')
     const usuarios = await usersController.getAll()
 
     const user = usuarios.find(u => u.username === username)
@@ -31,44 +29,23 @@ passport.use('local', new LocalStrategy(async (username, password, done) => {
     return done(null, user)
 }));
 
-
-
 passport.serializeUser( function (user, done){
     done(null, user.username)
 })
 passport.deserializeUser( async function (username, done){
-    console.log('DESERILIZER****:',username)
     const user = await usersController.getAll()
-    console.log('USER****:',user)
-    const userSelected = user.find(u=>u.username === username)
-    console.log('userSelected****:',userSelected)
+    const userSelected = await user.find(u=>u.username === username)
     done(null, userSelected)
 })
 // router.use(cookieParser)
 router.use(sessionDBConnection)
 
-router.use(passport.initialize(), (req,res,next) => {
-    console.log('iniciando passport en login')
-    next()
-})
-router.use(passport.session(),(req,res,next) => {
-    console.log('iniciando passport session en login')
-    next()
-})
-// router.use(passport.initialize())
-// router.use(passport.session())
+router.use(passport.initialize())
+router.use(passport.session())
 
-// router.get('/', async (req, res) => {
-//     console.log(req.isAuthenticated())
-//     if (req.isAuthenticated()){
-//         res.redirect('/api/productos')
-//     }else{
-//         res.render('login.ejs')
-//     }
-// });
 
 router.get('/', (req, res) => {
-    // logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
+    logger.info(`Se intentó acceder a /LOGIN ${req.url} con método ${req.method} exitosamente`);
         res.render('login.ejs')
     //}
 })
@@ -77,7 +54,7 @@ router.post('/', passport.authenticate('local', {failureRedirect: '/login-error'
 
 
 router.get('/login-error', (req,res) => {
-    // logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
+    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
     res.render('pages/login-error')
 })
 module.exports = router;

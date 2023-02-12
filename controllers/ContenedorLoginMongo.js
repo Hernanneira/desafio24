@@ -1,37 +1,35 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+console.log("db mongoose usuarios INICIADO")
 
-const UsersScheme = new Schema({
-    username: { type: String, required: true },
-    password: { type: String, required: true },
-})
-
-// console.log("db mongoose usuarios conectada")
-
-class Users {
-        UsersDAO = mongoose.model('users', UsersScheme);
-
-    async connect(){
-        await mongoose.connect('mongodb://localhost:27017/users', {
+const mongoseConnect = mongoose.createConnection('mongodb://localhost:27017/users', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             serverSelectionTimeoutMS: 5000,
         });
         console.log("db mongoose usuarios conectada")
-        }
+        
+class Users {
+        UsersDAO = mongoseConnect.model('users', require('../schemasModel/usersSchema'))
 
-    async disconnect(){
-        await mongoose.disconnect()
-        console.log("db mongoose usuarios desconectada");
-    }
+    // async connect(){
+    //     await mongoose.connect('mongodb://localhost:27017/users', {
+    //         useNewUrlParser: true,
+    //         useUnifiedTopology: true,
+    //         serverSelectionTimeoutMS: 5000,
+    //     });
+    //     console.log("db mongoose usuarios conectada")
+    //     }
+
+    // async disconnect(){
+    //     await mongoose.disconnect()
+    //     console.log("db mongoose usuarios desconectada");
+    // }
 
     async getAll() {
         try {
-            await this.connect()
-        
+            // await this.connect()
             const content = await this.UsersDAO.find({})
-            console.log(content)
-            await this.disconnect()
+            // await this.disconnect()
             return content
         } catch (error) {
             return(error)
@@ -40,7 +38,7 @@ class Users {
     
     async save(newUser) {
         try {
-            await this.connect()
+            // await this.connect()
             const content = await this.UsersDAO.find({})
             // let newId;
             // if(content.length == 0){
@@ -55,7 +53,7 @@ class Users {
             }
             await this.UsersDAO.create(newObj)
             const newContent = await this.UsersDAO.find({})
-            await this.disconnect()
+            // await this.disconnect()
             return newContent
             }
         catch (error) {
@@ -63,6 +61,7 @@ class Users {
         }
     }
 
+    
 //     async getById(id_articulo){
 //         try {
 //             await this.connect()
@@ -114,6 +113,8 @@ class Users {
 //         }
 //     }
 }
+// const disconnected = mongoose.disconnect()
+// console.log("db mongoose usuarios desconectada");
 
 const usersController = new Users()
 

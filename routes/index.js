@@ -1,7 +1,6 @@
 const {Router} = require('express');
 const isAuth = require('../utils/auth');
 const logger = require('../utils/log4js')
-
 const router = Router();
 const routeProducts = require('./productRoute')
 const routeLogin = require('./loginRoute')
@@ -11,19 +10,15 @@ const routeInfo = require('./infoRoute')
 const routeRandom = require('./randomRoute')
 const passport = require('passport');
 const sessionDBConnection = require('../db/sessionMongoAtlasDBConnection');
+const usersController = require('../controllers/ContenedorLoginMongo')
 // const cookieParser = require('cookie-parser');
 
 // router.use(cookieParser)
 router.use(sessionDBConnection)
 
-router.use(passport.initialize(), (req,res,next) => {
-    console.log('iniciando passport en indexRoute')
-    next()
-})
-router.use(passport.session(),(req,res,next) => {
-    console.log('iniciando passport session en indexRoute')
-    next()
-})
+router.use(passport.initialize())
+
+router.use(passport.session())
 
 router.use('/api/productos',isAuth, routeProducts) // midleware isAuth removido funciona.
 router.use('/login', routeLogin)
@@ -32,18 +27,16 @@ router.use('/logout', routeLogout)
 router.use('/info',routeInfo)
 router.use('/api/randoms',routeRandom)
 
-// router.get('/', (req, res) => {
-//     res.redirect('/api/productos')
-// })
 
 router.get('/', (req, res) => {
+    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente, REDIRIGIENDO A LOGIN`);
     res.redirect('/login')
 })
 
-// router.get('*', (req, res) => {
-//     logger.warn(`Route: ${req.path} 404 Not Found Method: ${req.method} `);
-//     res.send("Sorry 🤷‍♂️ 404 Not Found");
-// });
+router.get('*', (req, res) => {
+    logger.warn(`Route: ${req.path} 404 Not Found Method: ${req.method} `);
+    res.send("Sorry 🤷‍♂️ 404 Not Found");
+});
 
 
 module.exports = router;

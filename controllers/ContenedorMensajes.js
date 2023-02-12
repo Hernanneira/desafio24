@@ -1,125 +1,36 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-// const MensajesScheme = new Schema(
-//     {
-//     author: {
-//         id: { type: String, required: true },
-//         nombre: { type: String, required: true },
-//         apellido: { type: String, required: true },
-//         edad: { type: Number, required: true },
-//         alias: { type: String, required: true },
-//         avatar: { type: String, required: true }
-//     },
-//     date: { type: String, required: true },
-//     text: { type: String, required: true }
-//     })
+console.log("db mongoose mensajes INICIADO")
 
-const MensajesScheme = new Schema({
-    author: {
-        type: Object,
-        required: true
-    },
-    date: { 
-        type: String, 
-        required: true },
-    text: {
-        type: String,
-        required: true
-    }
-})
-
-// const MensajesScheme = {
-//     id: { type: String, required: true },
-//     mensajes: {
-//                 type: Object,
-//                 required: true
-//             }
-// }
-
-// const productosDAO = mongoose.model('mensajes', MensajesScheme)
-console.log("db mongoose mensajes conectada")
-// inserto algo para probar que levanta
-
-// await mongoose.connect('mongodb://localhost:27017/mensajes', {
-//             useNewUrlParser: true,
-//             useUnifiedTopology: true,
-//             serverSelectionTimeoutMS: 5000,
-//         });
-//         const chatHernan = [{
-//                 id: 'mensajes',
-//                 mensajes:[{
-//                     author: {
-//                         id: "data.author.email,",
-//                         nombre: "data.author.nombre,",
-//                         apellido: "data.author.apellido,",
-//                         edad: "data.author.edad,",
-//                         alias: "data.author.alias,",
-//                         avatar: "data.author.avatar"
-//                     },
-//                     date: "2022",
-//                     text: "PROBANDOOOO"
-//                 }]      
-//             }
-//         ]
-//             const inserciones = [];
-//             for (const prod of chatHernan) {
-//                 inserciones.push(productosDAO.create(prod))
-//             }
-//             const results = await Promise.allSettled(inserciones)
-//             console.log(chatHernan)
-//             console.log(inserciones)
-//             console.log(results)
-//             await mongoose.disconnect();
-
-// await mongoose.connect('mongodb://localhost:27017/mensajes', {
-//             useNewUrlParser: true,
-//             useUnifiedTopology: true,
-//             serverSelectionTimeoutMS: 5000,
-//         });
-//         const chatHernan = [{
-//             author: {
-//                 id: 1,
-//                 nombre: "hernan",
-//                 apellido: "Neira",
-//                 edad: 30,
-//                 alias: "Herni",
-//                 avatar: "messiii messiii"
-//             },
-//             date: "21/12/2022 20:12",
-//             text: "Probando que funciona"
-//             }]
-            
-//             const inserciones = [];
-//             for (const prod of chatHernan) {
-//                 inserciones.push(productosDAO.create(prod))
-//             }
-//             const results = await Promise.allSettled(inserciones)
-//             console.log(chatHernan)
-//             console.log(inserciones)
-//             console.log(results)
-//             await mongoose.disconnect();
-
-class Mensaje {
-        mensajessDAO = mongoose.model('mensajes', MensajesScheme);
-
-    async connect(){
-        await mongoose.connect('mongodb://localhost:27017/mensajes', {
+const mongooseMessages = mongoose.createConnection('mongodb://localhost:27017/mensajes', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             serverSelectionTimeoutMS: 5000,
         });
-        }
+        console.log("db mongoose mensajes conectada")
 
-    async disconnect(){
-        await mongoose.disconnect();
-    }
+class Mensaje {
+        mensajessDAO = mongooseMessages.model('mensajes', require('../schemasModel/messagesSchema'));
+
+    // async connect(){
+    //     await mongoose.connect('mongodb://localhost:27017/mensajes', {
+    //         useNewUrlParser: true,
+    //         useUnifiedTopology: true,
+    //         serverSelectionTimeoutMS: 5000,
+    //     });
+    //     console.log("db mongoose mensajes conectada")
+    // }
+
+    // async disconnect(){
+    //     await mongoose.disconnect();
+    //     console.log("db mongoose mensajes Desconectado")
+    // }
 
     async getAll() {
         try {
-            await this.connect()
+            // await this.connect()
             const content = await this.mensajessDAO.find({})
-            await this.disconnect()
+            // await this.disconnect()
             return content
         } catch (error) {
             return(error)
@@ -128,10 +39,10 @@ class Mensaje {
     
     async save(newMessage) {
         try {
-            await this.connect()
+            // await this.connect()
             await this.mensajessDAO.create(newMessage)
             const content = await this.getAll()
-            await this.disconnect()
+            // await this.disconnect()
             return content
             }
         catch (error) {

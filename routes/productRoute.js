@@ -7,16 +7,14 @@ const logger = require('../utils/log4js')
 
 router.get('/',  async (req, res, next) =>{
         try{
-            logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
+            logger.info(`Se intentó acceder a api/productos ${req.url} con método ${req.method} exitosamente`);
         const productos = await productosController.getAll()
         if (!productos) {
             logger.error('no se pudo traer productos')
         }
-        console.log('req.session en api/productos =', req.session)
         res.render('index.ejs',{productos, nombre: req.session.passport.user }) 
         }catch (err) {
             console.log(err)
-            logger.error(`no se pudo acceder a a ${req.url} con método ${req.method}`)
         }
         
     })

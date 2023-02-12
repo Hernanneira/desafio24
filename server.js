@@ -11,7 +11,7 @@ const cluster = require('cluster');
 const os = require('os')
 const router = require('./routes/index')
 const path = require('path');
-const passport = require('passport');
+
 
 const args = parseArgs(process.argv.slice(2));
 const app = express();
@@ -106,14 +106,6 @@ io.on("connection", async (socket) => {
   });
 });
 
-app.use(passport.initialize(), (req,res,next) => {
-    console.log('iniciando passport en index')
-    next()
-})
-app.use(passport.session(),(req,res,next) => {
-    console.log('iniciando passport session en index')
-    next()
-})
 //CRUD
 app.use(router)
 // app.use(authWebRouter)
