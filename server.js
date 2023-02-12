@@ -13,6 +13,7 @@ const router = require('./routes/index')
 const path = require('path');
 
 
+
 const args = parseArgs(process.argv.slice(2));
 const app = express();
 faker.locale = 'es'
@@ -34,6 +35,8 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, './public/views/pages'));
 
 app.use(express.static('public'))
+
+
 
 // webSocket
 

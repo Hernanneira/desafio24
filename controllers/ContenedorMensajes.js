@@ -1,8 +1,10 @@
+const dotenv = require('dotenv')
+dotenv.config();
 const mongoose = require('mongoose');
 
 console.log("db mongoose mensajes INICIADO")
 
-const mongooseMessages = mongoose.createConnection('mongodb://localhost:27017/mensajes', {
+const mongooseMessages = mongoose.createConnection(`mongodb+srv://${process.env.MONGO_ATLAS_USER}:${process.env.MONGO_ATLAS_PASS}@${process.env.MONGO_ATLAS_HOST}/?retryWrites=true&w=majority`, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             serverSelectionTimeoutMS: 5000,

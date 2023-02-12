@@ -1,0 +1,8 @@
+[2023-02-11T23:41:01.626] [WARN] prod - Route: /login-error 404 Not Found Method: GET 
+[2023-02-11T23:41:08.904] [WARN] prod - Route: /login-error 404 Not Found Method: GET 
+[2023-02-12T15:39:56.393] [WARN] prod - Route: /favicon.ico 404 Not Found Method: GET 
+[2023-02-12T15:40:03.716] [WARN] prod - Route: /favicon.ico 404 Not Found Method: GET 
+[2023-02-12T15:43:02.346] [WARN] prod - Route: /favicon.ico 404 Not Found Method: GET 
+[2023-02-12T15:43:06.158] [WARN] prod - Route: /favicon.ico 404 Not Found Method: GET 
+[2023-02-12T15:43:09.339] [WARN] prod - Route: /favicon.ico 404 Not Found Method: GET 
+[2023-02-12T15:43:19.091] [WARN] prod - Route: /favicon.ico 404 Not Found Method: GET 

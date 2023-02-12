@@ -10,7 +10,7 @@ const routeInfo = require('./infoRoute')
 const routeRandom = require('./randomRoute')
 const passport = require('passport');
 const sessionDBConnection = require('../db/sessionMongoAtlasDBConnection');
-const usersController = require('../controllers/ContenedorLoginMongo')
+
 // const cookieParser = require('cookie-parser');
 
 // router.use(cookieParser)
