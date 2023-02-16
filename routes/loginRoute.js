@@ -55,6 +55,6 @@ router.post('/', passport.authenticate('local', {failureRedirect: '/login-error'
 
 router.get('/login-error', (req,res) => {
     logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
-    res.render('pages/login-error')
+    res.render('/login-error.ejs')
 })
 module.exports = router;
