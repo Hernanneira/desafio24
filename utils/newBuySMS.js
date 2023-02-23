@@ -10,10 +10,15 @@ var authToken = process.env.TWILIO_AUTH_TOKEN;
 
 const client = twilio(accountSid, authToken);
 
+let txt = ""
+  cartProducts.forEach(iterarCarrito)
+  function iterarCarrito(value, index, array) {
+    txt += `id_articulo: ${value.id_articulo}\nArticulo: ${value.title} \nPrecio: ${value.price} \nFoto: ${value.thumbnail}`;
+  };
+
 const from = process.env.TWILIO_PHONE_NUMBER;
 const to = `+${user.telefono}`;
-//Mejorar la vista del cartProducts
-const body = `su pedido ha sido recibido y se encuentra en proceso. Articulo:${cartProducts}`;
+const body = `su pedido ha sido recibido y se encuentra en proceso. Articulo:${txt}`;
 
 const info = await client.messages.create({
   body, from, to });

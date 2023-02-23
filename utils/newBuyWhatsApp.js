@@ -10,11 +10,16 @@ var authToken = process.env.TWILIO_AUTH_TOKEN;
 
 const client = twilio(accountSid, authToken);
 
+let txt = ""
+  cartProducts.forEach(iterarCarrito)
+  function iterarCarrito(value, index, array) {
+    txt += `id_articulo: ${value.id_articulo}\nArticulo: ${value.title} \nPrecio: ${value.price} \nFoto: ${value.thumbnail}`;
+  };
+
 const from = process.env.TWILIO_WHATSAPPPHONE_NUMBER;
 const to = process.env.ADMIN_PHONE_NUMBER;
-//Mejorar la vista del cartProducts.toString()
-const body = `user: ${user.username} email: ${user.email}, Products:${cartProducts.toString()} `;
-
+const body = `user:\n${user.username}\nemail:\n${user.email}\nProducts:\n${txt}`;
+// const body = 'Hello, there!'
 await client.messages.create({
   body, from, to })
   .then(message => console.log(message.sid));

@@ -28,30 +28,16 @@ router.get('/',  async (req, res, next) =>{
 router.post('/', async (req, res, next) => {
     // por el momento uso todo el catalogo hasta resolver el cart NICO
     const cartProducts = await cartProductosController.getAll()
-
-    // function iterarCarrito(cartProductsArray) {
-    //     const cartProducts = cartProductsArray.forEach(element => {
-    //         const compra = `
-    //             ${element.id_articulo}
-    //             ${element.title}
-    //             ${element.price}
-    //             ${element.thumbnail}
-    //             ${element.quantity}`
-    //         console.log(compra)
-    //         }
-    // )};
-    // console.log(iterarCarrito(cartProductsArray))
-
     const allUser = await usersController.getAll()
     const user = allUser.find(element => element.username = req.session.passport?.user)
     if(cartProducts !== []) {
         console.log('inicio notificaciones')
-        sendNewBuyEmail(user,cartProducts)
-        console.log('notificaciones EMAIL ADMIN ok')
+        // sendNewBuyEmail(user,cartProducts)
+        // console.log('notificaciones EMAIL ADMIN ok')
         sendNewbuyWhatsApp(user,cartProducts)
         console.log('notificaciones WHATSAPP ADMIN ok')
-        sendNewbuySMS(user,cartProducts) 
-        console.log('notificaciones SMS USER whats ok')
+        // sendNewbuySMS(user,cartProducts) 
+        // console.log('notificaciones SMS USER whats ok')
     }
     // console.log('hola')
     // console.log(req.body)

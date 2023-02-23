@@ -16,24 +16,18 @@ const nodemailer = require("nodemailer");
       },
     });
   
-    // text: ` Products:${
-    //   cartProducts.forEach(element => {`
-    //     ${element.id_articulo}
-    //     ${element.title}
-    //     ${element.price}
-    //     ${element.thumbnail}
-    //     ${element.quantity} 
-    //   `})
-    // }`,
+    let txt = ""
+      cartProducts.forEach(iterarCarrito)
+      function iterarCarrito(value, index, array) {
+        txt += `id_articulo: ${value.id_articulo}\nArticulo: ${value.title} \nPrecio: ${value.price} \nFoto: ${value.thumbnail}`;
+      };
 
     // send mail with defined transport object
     let info = transporter.sendMail({
       from: 'newRegister@app.email', // sender address
       to: "probando@algo.com", // list of receivers
       subject: `nuevo pedido de user: ${user.username} email: ${user.email} `, // Subject line
-      //Mejorar la vista del cartProducts.toString()
-      text: ` Products:${cartProducts.toString()}`,
-      // plain text body
+      text: ` Products:\n${txt}`,// plain text body
       html: "<b>Hello world?</b>", // html body
     });
   }
