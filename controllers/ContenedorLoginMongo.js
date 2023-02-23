@@ -51,7 +51,12 @@ class Users {
             // }
             const newObj = {
                 username: newUser.username,
-                password: newUser.password
+                password: newUser.password,
+                email: newUser.email,
+                direccion: newUser.direccion,
+                edad: newUser.edad ,
+                telefono: newUser.telefono,
+                foto: newUser.foto
             }
             await this.UsersDAO.create(newObj)
             const newContent = await this.UsersDAO.find({})

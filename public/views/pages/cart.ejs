@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="/socket.io/socket.io.js"></script>
+    <script>src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"</script>
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <%- include('../partials/navbar'); %>
+    </header>
+    <main class="container bg-light ">
+        <h1>Carrito de compras</h1>
+<div class="entry">
+            <div class="col">
+                <button class="btn btn-outline-success" onclick="location.href='/'">inicio</button>
+            </div>
+            <form action="/api/cart" method="POST" name="myCart" >
+                <table class="table" id="cartTable">
+                    <thead>
+                        <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Agregar/Eliminar del Carrito</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trCartTable" >
+                            <% cartProducts.forEach(prod => { %>
+                            <tr>
+                                <td> <%= prod.id_articulo %> </td>
+                                <td> <%= prod.title %> </td>
+                                <td> <%= prod.price %> </td>
+                                <td> <img src="<%= prod.thumbnail %>" alt="<%= prod.title %>" width="25"> </td>
+                                <td> <button class="btn btn-outline-success" id="addProduct<%= prod.id_articulo %>">+</button> <button class="btn btn-outline-danger" id="deleteProduct<%= prod.id_articulo %>">-</button></td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+                <div class="col">
+                    <button class="btn btn-outline-success" type="submit" id="buy" >comprar</button>
+                </div>
+            </form>
+</div>
+    </main>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/ejs@3.1.6/ejs.min.js"></script>
+<script src="../../js/main.js"></script>
+</html>

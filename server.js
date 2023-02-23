@@ -12,19 +12,13 @@ const os = require('os')
 const router = require('./routes/index')
 const path = require('path');
 
-
-
 const args = parseArgs(process.argv.slice(2));
 const app = express();
 faker.locale = 'es'
 dotenv.config();
 const PORT = args.port || 8080;
-// const PORT = parseInt(process.argv[2]) || 8080;
 const modoCluster = args.modo == 'CLUSTER'
-// const modoCluster = process.argv[3] == 'CLUSTER';
 const numCPUs = os.cpus().length;
-
-
 const httpServer = new createServer(app)
 const io = new Server(httpServer)
 
@@ -36,16 +30,10 @@ app.set('views', path.join(__dirname, './public/views/pages'));
 
 app.use(express.static('public'))
 
-
-
 // webSocket
 
 io.on("connection", async (socket) => {
   console.log("Un cliente se ha conectado");
-  //User
-  socket.on("loginUsuario", (logUser) => {
-    socket.emit("user", logUser);
-  });
 
   //productos
   const productos = await productosController.getAll();
@@ -111,9 +99,6 @@ io.on("connection", async (socket) => {
 
 //CRUD
 app.use(router)
-// app.use(authWebRouter)
-// app.use(routerProducts)
-// app.use(routerProcess)
 
 //Server CLOUSETER OR FORK
 

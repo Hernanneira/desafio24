@@ -1,22 +1,20 @@
 const {Router} = require('express');
-const passport = require('passport');
-const router = Router();
-const productosController = require('../controllers/ContenedorProductos')
+const routeProducts = Router();
 const logger = require('../utils/log4js')
+let cartProducts = []
 
-
-router.get('/',  async (req, res, next) =>{
-        try{
-            logger.info(`Se intentó acceder a api/productos ${req.url} con método ${req.method} exitosamente`);
-        const productos = await productosController.getAll()
-        if (!productos) {
-            logger.error('no se pudo traer productos')
-        }
-        res.render('index.ejs',{productos, nombre: req.session.passport.user }) 
-        }catch (err) {
-            console.log(err)
-        }
-        
+routeProducts.get('/',  async (req, res, next) =>{
+    logger.info(`Se intentó acceder a api/productos ${req.url} con método ${req.method} exitosamente`);
+    res.render('index.ejs',{ nombre: req.session.passport.user }) 
     })
 
-module.exports = router;
+routeProducts.post('/', async (req, res, next) => {
+    console.log('hola prodcut ROute')
+    cartProducts = req.body
+    console.log(cartProducts)
+})
+
+module.exports = {
+    routeProducts,
+    cartProducts
+}

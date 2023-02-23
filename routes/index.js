@@ -2,12 +2,13 @@ const {Router} = require('express');
 const isAuth = require('../utils/auth');
 const logger = require('../utils/log4js')
 const router = Router();
-const routeProducts = require('./productRoute')
+const {routeProducts} = require('./productRoute')
 const routeLogin = require('./loginRoute')
 const routeRegister = require('./registerRoute')
 const routeLogout = require('./logoutRoute')
 const routeInfo = require('./infoRoute')
 const routeRandom = require('./randomRoute')
+const routeCart =require('./cartRoute')
 const passport = require('passport');
 const sessionDBConnection = require('../db/sessionMongoAtlasDBConnection');
 
@@ -26,6 +27,7 @@ router.use('/register', routeRegister)
 router.use('/logout', routeLogout)
 router.use('/info',routeInfo)
 router.use('/api/randoms',routeRandom)
+router.use('/api/cart',isAuth, routeCart)
 
 
 router.get('/', (req, res) => {
