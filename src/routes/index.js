@@ -10,6 +10,7 @@ const routeInfo = require('./infoRoute')
 const routeRandom = require('./randomRoute')
 const routeCart =require('./cartRoute')
 const passport = require('passport');
+const routerAPI = require('./apiRouter')
 const sessionDBConnection = require('../db/sessionMongoAtlasDBConnection');
 
 // const cookieParser = require('cookie-parser');
@@ -28,10 +29,11 @@ router.use('/logout', routeLogout)
 router.use('/info',routeInfo)
 router.use('/api/randoms',routeRandom)
 router.use('/api/cart',isAuth, routeCart)
+router.use('/api/v1/cart', routerAPI )
 
 
 router.get('/', (req, res) => {
-    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente, REDIRIGIENDO A LOGIN`);
+    logger.info(`Se intentó acceder a ${req.baseUrl} con método ${req.method} exitosamente, REDIRIGIENDO A LOGIN`);
     res.redirect('/login')
 })
 

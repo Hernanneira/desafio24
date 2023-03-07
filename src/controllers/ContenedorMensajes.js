@@ -14,25 +14,9 @@ const mongooseMessages = mongoose.createConnection(`mongodb+srv://${process.env.
 class Mensaje {
         mensajessDAO = mongooseMessages.model('mensajes', require('../schemasModel/messagesSchema'));
 
-    // async connect(){
-    //     await mongoose.connect('mongodb://localhost:27017/mensajes', {
-    //         useNewUrlParser: true,
-    //         useUnifiedTopology: true,
-    //         serverSelectionTimeoutMS: 5000,
-    //     });
-    //     console.log("db mongoose mensajes conectada")
-    // }
-
-    // async disconnect(){
-    //     await mongoose.disconnect();
-    //     console.log("db mongoose mensajes Desconectado")
-    // }
-
     async getAll() {
         try {
-            // await this.connect()
             const content = await this.mensajessDAO.find({})
-            // await this.disconnect()
             return content
         } catch (error) {
             return(error)
@@ -41,11 +25,7 @@ class Mensaje {
     
     async save(newMessage) {
         try {
-            // await this.connect()
             await this.mensajessDAO.create(newMessage)
-            const content = await this.getAll()
-            // await this.disconnect()
-            return content
             }
         catch (error) {
             return(error)

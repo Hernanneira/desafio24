@@ -15,25 +15,9 @@ const mongooseProductos = mongoose.createConnection(`mongodb+srv://${process.env
 class Pruduct {
         productosDAO = mongooseProductos.model('productos', require('../schemasModel/productoSchema'));
 
-    // async connect(){
-        // await mongoose.connect('mongodb://localhost:27017/productos24', {
-        //     useNewUrlParser: true,
-        //     useUnifiedTopology: true,
-        //     serverSelectionTimeoutMS: 5000,
-        // });
-        // console.log("db mongoose productos conectada")
-        // }
-
-    // async disconnect(){
-    //     await mongoose.disconnect();
-    //     console.log("db mongoose productos Desconectada")
-    // }
-
     async getAll() {
         try {
-            // await this.connect()
             const content = await this.productosDAO.find({})
-            // await this.disconnect()
             return content
         } catch (error) {
             return(error)
@@ -42,7 +26,6 @@ class Pruduct {
     
     async save(newArticulo) {
         try {
-            // await this.connect()
             const content = await this.productosDAO.find({})
             let newId;
             if(content.length == 0){
@@ -51,15 +34,9 @@ class Pruduct {
                 newId = content.length + 1;
                 console.log(newId)
             }
-            const newObj = {
-                title: newArticulo.title,
-                price: newArticulo.price,
-                thumbnail: newArticulo.thumbnail,
-                id_articulo: newId
-            }
-            await this.productosDAO.create(newObj)
-            const newContent = await this.productosDAO.find({})
-            // await this.disconnect()
+            newArticulo.id_articulo = newId,
+            newArticulo.quantity = 0
+            const newContent = await this.productosDAO.create(newArticulo)
             return newContent
             }
         catch (error) {

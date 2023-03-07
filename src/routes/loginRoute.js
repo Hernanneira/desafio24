@@ -45,10 +45,10 @@ router.use(passport.session())
 
 
 router.get('/', (req, res) => {
-    logger.info(`Se intentó acceder a /LOGIN ${req.url} con método ${req.method} exitosamente`);
+    logger.info(`Se intentó acceder a /LOGIN ${req.baseUrl} con método ${req.method} exitosamente`);
     // NICO resolver Cannot read properties of undefined (reading 'user')
     try {
-       const nombre =  req.session.passport.user
+       const nombre =  req.session?.passport?.user || ""
         if (nombre) {
             res.redirect('/api/productos')
         }
@@ -65,7 +65,7 @@ router.post('/', passport.authenticate('local', {failureRedirect: '/login-error'
 
 
 router.get('/login-error', (req,res) => {
-    logger.info(`Se intentó acceder a ${req.url} con método ${req.method} exitosamente`);
+    logger.info(`Se intentó acceder a ${req.baseUrl} con método ${req.method} exitosamente`);
     res.render('/login-error.ejs')
 })
 module.exports = router;

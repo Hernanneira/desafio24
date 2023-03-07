@@ -15,11 +15,11 @@
     </header>
     <main class="container bg-light ">
         <h1>Carrito de compras</h1>
+        <p id="user"><%= user %></p>
 <div class="entry">
             <div class="col">
                 <button class="btn btn-outline-success" onclick="location.href='/'">inicio</button>
             </div>
-            <form action="/api/cart" method="POST" name="myCart" >
                 <table class="table" id="cartTable">
                     <thead>
                         <tr>
@@ -28,27 +28,19 @@
                         <th scope="col">Precio</th>
                         <th scope="col">Imagen</th>
                         <th scope="col">Agregar/Eliminar del Carrito</th>
+                        <th scope="col">Cantidad</th>
                         </tr>
                     </thead>
                     <tbody id="trCartTable" >
-                            <% cartProducts.forEach(prod => { %>
-                            <tr>
-                                <td> <%= prod.id_articulo %> </td>
-                                <td> <%= prod.title %> </td>
-                                <td> <%= prod.price %> </td>
-                                <td> <img src="<%= prod.thumbnail %>" alt="<%= prod.title %>" width="25"> </td>
-                                <td> <button class="btn btn-outline-success" id="addProduct<%= prod.id_articulo %>">+</button> <button class="btn btn-outline-danger" id="deleteProduct<%= prod.id_articulo %>">-</button></td>
-                            </tr>
-                            <% }) %>
                     </tbody>
                 </table>
                 <div class="col">
-                    <button class="btn btn-outline-success" type="submit" id="buy" >comprar</button>
+                    <button class="btn btn-outline-success" id="buy" >comprar</button>
+                    <button class="btn btn-outline-success" id="deleteAll" >Borrar Todo</button>
                 </div>
-            </form>
 </div>
     </main>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/ejs@3.1.6/ejs.min.js"></script>
-<script src="../../js/main.js"></script>
+<script src="../../js/cart.js"></script>
 </html>

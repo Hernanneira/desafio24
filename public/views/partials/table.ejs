@@ -3,21 +3,21 @@
         <table class="table">
             <thead>
                 <tr>
-                <th scope="col">id</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Precio</th>
-                <th scope="col">Imagen</th>
-                <th scope="col">Agregar/Eliminar al Carrito</th>
+                    <th scope="col">id</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Imagen</th>
+                    <th scope="col">Agregar/Eliminar al Carrito</th>
                 </tr>
             </thead>
             <tbody id="trTable">
                 <% listProd.forEach(prod => { %>
-                    <tr>
+                    <tr id="product-<%= prod.id_articulo%>">
                         <td> <%= prod.id_articulo %> </td>
                         <td> <%= prod.title %> </td>
                         <td> <%= prod.price %> </td>
                         <td> <img src="<%= prod.thumbnail %>" alt="<%= prod.title %>" width="25"> </td>
-                        <td> <button class="btn btn-outline-success" id="addProduct-<%= prod.id_articulo%>">+</button> <button class="btn btn-outline-danger" id="deleteProduct-<%=prod.id_articulo%>">-</button> <p><%= prod.cantidad %></p></td>
+                        <td> <button class="btn btn-outline-success" id="addProduct-<%= prod.id_articulo%>">+</button> <button class="btn btn-outline-danger" id="delProduct-<%= prod.id_articulo%>">-</button></td>
                     </tr>
                 <% }) %>
             </tbody>

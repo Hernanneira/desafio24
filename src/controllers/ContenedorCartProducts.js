@@ -13,42 +13,52 @@ const mongooseProductos = mongoose.createConnection(`mongodb+srv://${process.env
 
 
 class Pruduct {
-        cartProductosDAO = mongooseProductos.model('cartProductos', require('../schemasModel/productoSchema'));
+        cartProductosDAO = mongooseProductos.model('cartProductos', require('../schemasModel/cartSchema'));
 
-    async getAll() {
+    async createCart(cartUser) {
         try {
-            const content = await this.cartProductosDAO.find({})
+            const content = await this.cartProductosDAO.create(cartUser)
             return content
-        } catch (error) {
-            return(error)
-        }
-    }
-    
-    async save(newArticulo) {
-        try {
-            const content = await this.cartProductosDAO.find({})
-            let newId;
-            if(content.length == 0){
-                newId = 1;
-            }else {
-                newId = content.length + 1;
-                console.log(newId)
-            }
-            const newObj = {
-                title: newArticulo.title,
-                price: newArticulo.price,
-                thumbnail: newArticulo.thumbnail,
-                id_articulo: newId
-            }
-            await this.cartProductosDAO.create(newObj)
-            const newContent = await this.cartProductosDAO.find({})
-            return newContent
             }
         catch (error) {
             return(error)
         }
     }
-    
+
+    async getCart(user){
+        try {
+            const content =  await this.cartProductosDAO.find({"user": user})
+            if(content.cart == []){
+                return({ error : 'cart no encontrado' })
+            } else {
+                return content
+            }
+        } catch (error) {
+            console.log('estamos en error')
+            return(error)
+        }
+    }
+
+    async update(user, cart) {
+        try{
+            const updateProduct = await this.cartProductosDAO.updateOne({"user": user}, {$set: {"cart": cart}})
+            console.log(updateProduct)
+            return this.getCart(user) ;
+        } catch (error) {
+            return(error)
+        }
+    }
+
+     async deleteAll(user){
+        try {
+            await this.cartProductosDAO.deleteOne({"user": user})
+            return []
+        } catch (error) {
+            console.log(error)
+            return "no pudo eliminarse"
+        }
+    }
+
     // async getById(id_articulo){
     //     try {
     //         await this.connect()
@@ -77,17 +87,7 @@ class Pruduct {
     //         return(error)
     //     }
     // }
-    // async deleteAll(){
-    //     try {
-    //         await this.connect()
-    //         await this.productosDAO.deleteAll({})
-    //         await this.disconnect()
-    //         return "eliminado con exito"
-    //     } catch (error) {
-    //         console.log(error)
-    //         return "no pudo eliminarse"
-    //     }
-    // }
+   
 
     // async deleteById (id_articulo) {
     //     try {

@@ -5,7 +5,7 @@ const saltRounds = 10;
 const usersController = require('../controllers/ContenedorLoginMongo')
 const passport = require('passport');
 const { Strategy: LocalStrategy } = require('passport-local');
-const sendNewRegisterEmail = require('./../utils/newRegisterEmail')
+const sendNewRegisterEmail = require('../utils/newRegisterEmail')
 
 
 function createHash(password) {
@@ -33,7 +33,7 @@ passport.use('register', new LocalStrategy({
         direccion: req.body.direccion,
         edad: req.body.edad,
         telefono: req.body.telefono,
-        foto: req.body.foto
+        foto: req.body.foto,
     }
 
     const newUser = await usersController.save(user)
