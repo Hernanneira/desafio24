@@ -18,7 +18,6 @@ router.get('/',  async (req, res, next) =>{
     }catch (err) {
         console.log(err)
     }
-    
 })
 
 router.post('/',  async (req, res, next) =>{
@@ -31,7 +30,7 @@ router.post('/',  async (req, res, next) =>{
         }
         const cart = await cartProductosController.createCart(cartUser)
         console.log('cart',cart)
-    if (!cartProducts) {
+    if (!cart) {
         logger.error('no se pudo traer productos del carrito')
         res.json('no se pudo traer el carrito')
     }

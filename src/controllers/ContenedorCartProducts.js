@@ -17,8 +17,15 @@ class Pruduct {
 
     async createCart(cartUser) {
         try {
-            const content = await this.cartProductosDAO.create(cartUser)
-            return content
+            const cart = await this.getCart(cartUser.user)
+            console.log(cart)
+                if (cart.length !== 0) {
+                    const content = this.update(cartUser.user, cartUser.cart)
+                    return content
+                }else {
+                    const content = await this.cartProductosDAO.create(cartUser)
+                    return content
+                }
             }
         catch (error) {
             return(error)
@@ -41,8 +48,7 @@ class Pruduct {
 
     async update(user, cart) {
         try{
-            const updateProduct = await this.cartProductosDAO.updateOne({"user": user}, {$set: {"cart": cart}})
-            console.log(updateProduct)
+            await this.cartProductosDAO.updateOne({"user": user}, {$set: {"cart": cart}})
             return this.getCart(user) ;
         } catch (error) {
             return(error)

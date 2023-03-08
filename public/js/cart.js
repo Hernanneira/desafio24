@@ -40,7 +40,6 @@ async function loadCartProds(cartUser) {
     }
 
     if(cart) {
-        console.log(cart)
         cart.forEach(element => {
             const addProduct = document.getElementById(`addProduct-${element.id_articulo}`)
 
@@ -51,7 +50,6 @@ async function loadCartProds(cartUser) {
                 console.log('user', user)
                 console.log('cart',cart)
                 socket.emit("renderCart", user, cart)
-                //POST o emit???
             })
             
             const deleteProduct = document.getElementById(`delProduct-${element.id_articulo}`)
@@ -63,10 +61,17 @@ async function loadCartProds(cartUser) {
                 console.log('cart',cart)
                 console.log('user',user)
                 socket.emit("renderCart", user, cart)
-                //POST???
             })
         })
     }
+}
+//delete Cart
+if (document.getElementById('deleteAll')) {
+    document.getElementById('deleteAll').addEventListener('click', (e) => {
+        e.preventDefault
+        cart = []
+        socket.emit("renderCart", user, cart)
+    })
 }
 
 //funcion add y del repetida con main.js 
@@ -102,30 +107,18 @@ if (document.getElementById('buy')) {
         e.preventDefault
         console.log('buy')
         console.log(cart)
-        // fetch('http://localhost:8080/api/productos', {
-        //     method: "POST",
-        //     headers: {
-        //         "content-type": "application/json"
-        //     },
-        //     body: JSON.stringify(cart)
-        // })
-    })
-}
-
-if (document.getElementById('deleteAll')) {
-    document.getElementById('deleteAll').addEventListener('click', (e) => {
-        e.preventDefault
-        console.log('buy')
-        console.log(cart)
         fetch('http://localhost:8080/api/cart', {
-            method: "DELETE",
+            method: "POST",
             headers: {
                 "content-type": "application/json"
             },
-            body: JSON.stringify(user)
+            body: JSON.stringify(cart)
         })
     })
-} 
+}
+
+
+
 
 
 
