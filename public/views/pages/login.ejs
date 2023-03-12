@@ -13,20 +13,32 @@
     <header>
         <%- include('../partials/navbar'); %>
     </header>
-    <main class="container bg-light ">
-        <h1>Login de Usuario</h1>
-            <form action="/login" method="post" class="my-3">
-                <div class="row g-3">
-                    <div class="col">
-                        <input type="text" class="form-control" placeholder="Nombre de Usuario" name="username" id="username" required>
-                        <input type="password" class="form-control" placeholder="contraseña" name="password" id="password" required>
-                        <button type="submit" class="btn btn-outline-success" id="envUsuario">Enviar</button>
+    <main >
+        <div class="container">
+            <div class="row justify-content-center mt-5">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Ingreso de Usuario</h2>
+                        </div>
+                        <div class="card-body">
+                            <form action="/login" method="post">
+                                <div class="form-group">
+                                    <label for="nombre">Nombre de Usuario:</label>
+                                    <input type="text"  name="username" id="username" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contrasena">Contraseña:</label>
+                                    <input type="password" name="password" id="password" class="form-control" required>
+                                </div>
+                                <button type="submit" class="btn btn-outline-success" id="envUsuario">Ingresar</button>
+                                <button class=" btn btn-primary" id="envUsuario" onclick="location.href='/register'">Registrar</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </form>
-            <div class="col">
-                <button class="btn btn-outline-success" id="envUsuario" onclick="location.href='/register'">Registrar</button>
             </div>
+        </div>
     </main>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/ejs@3.1.6/ejs.min.js"></script>

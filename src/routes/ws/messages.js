@@ -1,5 +1,6 @@
 
 const messagesDAO = require('../../DAO/messagesDAO.js');
+const UsersDAO = require('../../DAO/usersDAO')
 const { normalizeAll } = require('../../utils/normalize');
 
 async function handleSendMessages () {
@@ -16,8 +17,11 @@ async function configureSocketMessage(socket, sockets) {
   socket.emit("messages", await handleSendMessages());
 
   socket.on("messegesNew", async (message) => {
-    message.date = new Date();
-    
+
+    // const usarName = UsersDAO.getUser(message.nombre)
+
+    message.date = new Date().toLocaleString();
+    console.log(message)
     await messagesDAO.save(message);
     sockets.emit("messages", await handleSendMessages());
   });

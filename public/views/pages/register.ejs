@@ -13,25 +13,41 @@
     <header>
         <%- include('../partials/navbar'); %>
     </header>
-    <main class="container bg-light ">
-        <h1>Registro de Usuario</h1>
-            <form class="form" action="/register" method="post" role="form" autocomplete="off">
-                <div class="row g-3">
-                    <div class="col">
-                        <input type="text" class="form-control" placeholder="Nombre de Usuario" name="username" id="username" required>
-                        <input type="password" class="form-control" placeholder="contraseña" name="password" id="password" required>
-                        <input type="email" class="form-control" placeholder="email" name="email" id="email" required>
-                        <input type="text" class="form-control" placeholder="direccion" name="direccion" id="direccion" required>
-                        <input type="number" class="form-control" placeholder="edad" name="edad" id="edad" required>
-                        <input type="number" class="form-control" placeholder="telefono agregar prefijos int, Ej Arg: 54" name="telefono" id="telefono" required>
-                        <input type="text" class="form-control" placeholder="Link de foto" name="foto" id="foto" required>
-                        <button type="submit" class="btn btn-outline-success" id="envRegistro" value="Register">Registrar</button>
-                    </div>
-                </div>
-            </form>
-            <div class="col">
-                <button class="btn btn-outline-success" id="envUsuario" onclick="location.href='/login'">Login</button>
-            </div>
+    <div class="container">
+    <h1>Registro</h1>
+    <form action="/register" method="post" autocomplete="off">
+      <div class="form-group">
+        <label for="username">Usuario:</label>
+        <input type="text" class="form-control" id="username" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Contraseña:</label>
+        <input type="password" class="form-control" id="password" name="password" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="address">Dirección:</label>
+        <input type="text" class="form-control" id="direccion" name="direccion" required>
+      </div>
+      <div class="form-group">
+        <label for="age">Edad:</label>
+        <input type="number" class="form-control" id="edad" name="edad" required>
+      </div>
+      <div class="form-group">
+        <label for="phone">Teléfono:</label>
+        <input type="tel" class="form-control" id="telefono" name="telefono" required>
+      </div>
+      <div class="form-group">
+        <label for="photo">Foto:</label>
+        <input type="text" class="form-control" id="foto" name="foto" required>
+      </div>
+      <button type="submit" class="btn btn-primary" id="envRegistro" value="Register">Registrarse</button>
+    </form>
+    <button class="btn btn-outline-success" id="envUsuario" onclick="location.href='/login'">Login</button>
+  </div>
     </main>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/ejs@3.1.6/ejs.min.js"></script>

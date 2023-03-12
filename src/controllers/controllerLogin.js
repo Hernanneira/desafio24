@@ -59,7 +59,7 @@ const loginError = (req, res) => {
   logger.info(
     `Se intentó acceder a ${req.baseUrl} con método ${req.method} exitosamente`
   );
-  res.render("/login-error.ejs");
+  res.render("login-error.ejs");
 };
 
 const passportLocalLogin = passport.authenticate("local", {

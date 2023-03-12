@@ -60,8 +60,11 @@ const getRegisterIndex =  async(req,res)=> {
 }
 const passportRegister = passport.authenticate('register',{failureRedirect: '/register-error', successRedirect:'/api/productos'});
 
-const getRegisterError = (req, res)=>{
-    res.json('error')
-}
+const getRegisterError = (req, res) => {
+    logger.info(
+      `Se intentó acceder a ${req.baseUrl} con método ${req.method} exitosamente`
+    );
+    res.render("register-error.ejs");
+  }
 
 module.exports = {getRegisterIndex , passportRegister, getRegisterError}

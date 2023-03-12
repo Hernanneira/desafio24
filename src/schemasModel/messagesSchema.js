@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const MensajesScheme = new Schema({
-    author: {
-        type: Object,
+    nombre: {
+        type: String,
         required: true
     },
     date: { 

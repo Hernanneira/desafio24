@@ -94,10 +94,6 @@ function deleteInCart (prod) {
         cantidadServicio.quantity--
         cart.splice(indice, 1)
     }
-    // if (cantidadServicio.quantity > 1) {
-    //     cantidadServicio.quantity--
-    //     console.log('cantidadServicio',cantidadServicio.quantity)
-    // }
     return prod
 }
 
@@ -124,10 +120,12 @@ socket.on('messages', function(data) { render(data); });
 
 function render(data) {
     const html = data.chatDenormalized.mensajes.map((elem) => {
-        return(`<div>
-            <strong style="color:blue">${elem.author.email}</strong>:
-            <p>${elem.date}<p>
-            <i style="color:green">${elem.text}</i> </div>
+        return(`
+            <div class="message">
+                <span class="user">${elem.nombre}</span>
+                <span class="time">${elem.date}</span>
+                <span class="text">${elem.text}</span>
+            </div>
             `)
     }).join(" ");
     const porcentajeCompresion = `<h4 style="color:blue" >Centro de Mensajes(compresion %${data.compr}) </h4>`
@@ -142,22 +140,18 @@ document.getElementById('formChat').addEventListener('submit', (e) => {
 
 function agregarMensaje() {
     const nuevoMensaje = {
-        author:{
-            email: document.getElementById('email').value,
-            nombre: document.getElementById('nombre').value,
-            apellido: document.getElementById('apellido').value,
-            edad: document.getElementById('edad').value,
-            alias: document.getElementById('alias').value,
-            avatar: document.getElementById('avatar').value,
-        },
+        // author:{
+        //     email: document.getElementById('email').value,
+        //     nombre: document.getElementById('nombre').value,
+        //     apellido: document.getElementById('apellido').value,
+        //     edad: document.getElementById('edad').value,
+        //     alias: document.getElementById('alias').value,
+        //     avatar: document.getElementById('avatar').value,
+        // },
+        nombre: document.getElementById('user').innerHTML,
         text: document.getElementById('textoMensaje').value,
     }
     socket.emit("messegesNew",nuevoMensaje)
 }
 
-//RECUPERA LOS DATOS
-let carritoEnLS = JSON.parse(localStorage.getItem("cart"))
-if (localStorage.getItem(`cart`)) {
-   cart = carritoEnLS
-}
 

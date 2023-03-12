@@ -32,6 +32,15 @@ class Users {
             return(error)
         }
     }
+
+    async getUser(name) {
+        try {
+            const content = await this.UsersDAO.find({"username": name})
+            return content
+        } catch (error) {
+            return(error)
+        }
+    }
 }
 
 const UsersDAO = new Users()
