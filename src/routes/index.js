@@ -13,16 +13,13 @@ const passport = require('passport');
 const routerAPI = require('./apiRouter')
 const sessionDBConnection = require('../db/sessionMongoAtlasDBConnection');
 
-// const cookieParser = require('cookie-parser');
-
-// router.use(cookieParser)
 router.use(sessionDBConnection)
 
 router.use(passport.initialize())
 
 router.use(passport.session())
 
-router.use('/api/productos',isAuth, routeProducts) // midleware isAuth removido funciona.
+router.use('/api/productos',isAuth, routeProducts)
 router.use('/login', routeLogin)
 router.use('/register', routeRegister)
 router.use('/logout', routeLogout)

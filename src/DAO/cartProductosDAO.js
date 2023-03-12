@@ -28,7 +28,8 @@ class Pruduct {
                 }
             }
         catch (error) {
-            return(error)
+            console.error(error);
+            return false;
         }
     }
 
@@ -64,49 +65,8 @@ class Pruduct {
             return "no pudo eliminarse"
         }
     }
-
-    // async getById(id_articulo){
-    //     try {
-    //         await this.connect()
-    //         const content =  await this.productosDAO.find({id_articulo: id_articulo}) // usando mongo
-    //         const elementosFiltrados = content.filter(e => e.id_articulo === id_articulo) //trabajandolo en paralelo
-    //         await this.disconnect()
-    //         if(elementosFiltrados.length === 0){
-    //             return({ error : 'producto no encontrado' })
-    //         } else {
-    //             return content
-    //         }
-    //     } catch (error) {
-    //         console.log('estamos en error')
-    //         return(error)
-    //     }
-    // }
-
-    // async update(timestamp, nombre, descripcion, código, foto, precio, stock, id_articulo) {
-    //     try{
-    //         await this.connect()
-    //         const newProduct = {timestamp, nombre, descripcion, código, foto, precio, stock, id_articulo};
-    //         const updateProduct = await this.productosDAO.updateMany({id_articulo: id_articulo}, {$set: newProduct})
-    //         await this.disconnect()
-    //         return updateProduct ; //me devuelve un objeto raro pero lo actualiza.
-    //     } catch (error) {
-    //         return(error)
-    //     }
-    // }
-   
-
-    // async deleteById (id_articulo) {
-    //     try {
-    //         await this.connect()
-    //         const elementosFiltrados = await this.productosDAO.deleteMany({id_articulo: id_articulo}) //me devuelve un objeto raro pero lo elimina.
-    //         await this.disconnect()
-    //         return elementosFiltrados 
-    //     } catch (error) {
-    //         return(error)
-    //     }
-    // }
 }
 
-const cartProductosController = new Pruduct()
+const cartProductosDAO = new Pruduct()
 
-module.exports = cartProductosController
+module.exports = cartProductosDAO

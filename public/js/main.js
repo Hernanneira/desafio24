@@ -56,14 +56,18 @@ if (document.getElementById('preBuy')) {
         e.preventDefault
         console.log('preBuy')
         console.log(cart)
-        fetch('http://localhost:8080/api/v1/cart', {
-            method: "POST",
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify(cart)
-        })
-        window.location = 'http://localhost:8080/api/cart';
+        if (cart.length !== 0){
+            fetch('http://localhost:8080/api/v1/cart', {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify(cart)
+            })
+            window.location = 'http://localhost:8080/api/cart';
+        } else {
+            console.log('Cart vacio.')
+        }
     })
 }
 
@@ -73,7 +77,7 @@ if (document.getElementById('preBuy')) {
 function addToCart (prod) {
     let cantidadServicio = cart.find(carrito => carrito.id_articulo === prod.id_articulo)
     if (cantidadServicio) {
-        cantidadServicio.quantity++
+        cantidadServicio.quantity = 1
         console.log('cantidadServicio',cantidadServicio)
     } else {
         prod.quantity = 1
@@ -90,10 +94,10 @@ function deleteInCart (prod) {
         cantidadServicio.quantity--
         cart.splice(indice, 1)
     }
-    if (cantidadServicio.quantity > 1) {
-        cantidadServicio.quantity--
-        console.log('cantidadServicio',cantidadServicio.quantity)
-    }
+    // if (cantidadServicio.quantity > 1) {
+    //     cantidadServicio.quantity--
+    //     console.log('cantidadServicio',cantidadServicio.quantity)
+    // }
     return prod
 }
 

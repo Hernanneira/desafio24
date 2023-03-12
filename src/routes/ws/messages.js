@@ -1,10 +1,10 @@
 
-const mensajeController = require('../../controllers/ContenedorMensajes.js');
+const messagesDAO = require('../../DAO/messagesDAO.js');
 const { normalizeAll } = require('../../utils/normalize');
 
 async function handleSendMessages () {
     try {
-      const messages = await mensajeController.getAll();
+      const messages = await messagesDAO.getAll();
       return normalizeAll(messages)
     } catch (error) {
       console.error(error.message)
@@ -18,7 +18,7 @@ async function configureSocketMessage(socket, sockets) {
   socket.on("messegesNew", async (message) => {
     message.date = new Date();
     
-    await mensajeController.save(message);
+    await messagesDAO.save(message);
     sockets.emit("messages", await handleSendMessages());
   });
 

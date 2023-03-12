@@ -1,9 +1,9 @@
 
-const productosController = require('../../controllers/ContenedorProductos');
+const productosDAO = require('../../DAO/productsDAO');
 
 async function handleSendProducts () {
     try {
-        const productos = await productosController.getAll();
+        const productos = await productosDAO.getAll();
       return productos
     } catch (error) {
       console.error(error.productos)
@@ -16,7 +16,7 @@ async function configureSocketProducts(socket, sockets) {
 
   socket.on("guardarNuevoProducto", async (nuevoProducto) => {
 
-    const newProducto = await productosController.save(nuevoProducto);
+    const newProducto = await productosDAO.save(nuevoProducto);
     console.log(newProducto)
     sockets.emit("productos", await handleSendProducts());
   });

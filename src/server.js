@@ -8,7 +8,6 @@ const cluster = require('cluster');
 const os = require('os')
 const router = require('./routes/index')
 const path = require('path');
-
 const { configureSocketMessage } = require('./routes/ws/messages');
 const { configureSocketProducts } = require('./routes/ws/products');
 const {configureSocketCart} = require('./routes/ws/cart')

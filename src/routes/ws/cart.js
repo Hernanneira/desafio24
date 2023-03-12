@@ -1,8 +1,8 @@
-const cartProductosController = require('../../controllers/ContenedorCartProducts');
+const cartProductosDAO = require('../../DAO/cartProductosDAO');
 
 async function handleSendCart (user) {
     try {
-        const productos = await cartProductosController.getCart(user);
+        const productos = await cartProductosDAO.getCart(user);
       return productos
     } catch (error) {
       console.error(error.productos)
@@ -18,10 +18,10 @@ async function configureSocketCart(socket, sockets) {
   
   socket.on("renderCart", async (user, cart) => {
     if(cart.length == 0) {
-      await cartProductosController.deleteAll(user)
+      await cartProductosDAO.deleteAll(user)
       sockets.emit("cart", await handleSendCart(user));
     } else {
-      const newCart = await cartProductosController.update(user, cart);
+      const newCart = await cartProductosDAO.update(user, cart);
       console.log('newCart',newCart)
       sockets.emit("cart", await handleSendCart(user));
     }
